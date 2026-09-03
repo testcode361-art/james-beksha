@@ -4,7 +4,7 @@ import {
   Mail, BookOpen, User, Award, Quote, ArrowRight, Star, 
   Music, Shield, BookMarked, Menu, X, Home, Info, Phone, 
   MapPin, Compass, FileText, Fingerprint, Scroll, 
-  AlertCircle, Target, Zap, Gem 
+  AlertCircle, Target, Zap, Gem, Rocket 
 } from 'lucide-react';
 
 const App = () => {
@@ -14,6 +14,7 @@ const App = () => {
   const [activeSection, setActiveSection] = useState('home');
   const [logoError, setLogoError] = useState(false);
   const [bgError, setBgError] = useState(false);
+  const [authorPhotoError, setAuthorPhotoError] = useState(false);
   const [isVisible, setIsVisible] = useState({});
 
   const handleEmailSubmit = (e) => {
@@ -241,19 +242,60 @@ const App = () => {
             </div>
 
             <div className="about-content grid md:grid-cols-5 gap-8">
+              {/* Left Column - Author Photo and Text inline */}
               <div className="md:col-span-3 space-y-6">
-                <div className={`about-card transition-all duration-700 delay-100 ${isVisible['about-wrapper'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-                  <p className="text-lg leading-relaxed text-[#1a1a1a]">
-                    <span className="font-semibold text-[#1a1a1a]">James E. Beksha</span> began his writer's odyssey in a security guard mailer on the 6th of February 1992. 
-                    While reading Robert B. Parker's <span className="italic font-medium">Thin Air</span>, he asked himself: <span className="font-medium text-[#8b1a1a]">"how hard could it be to write a book?"</span> 
-                    That question launched a 22-year journey.
-                  </p>
-                  <p className="text-lg leading-relaxed text-[#1a1a1a]">
-                    A high school dropout in 1979, James is a hard worker from a hard-working family — with a <span className="font-semibold text-[#1a1a1a]">Rock n' Roll Attitude</span> that 
-                    fuels every page. His debut novel is now being re-published with <span className="font-semibold text-[#1a1a1a]">Author Reputation Press</span> out of Canton, Mass.
-                  </p>
+                {/* Photo and Text inline row - Photo now fills the card height */}
+                <div className={`transition-all duration-700 delay-100 ${isVisible['about-wrapper'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+                  <div className="about-card p-3">
+                    <div className="flex flex-col md:flex-row gap-4 items-stretch">
+                      {/* Author Photo - Nearly full height with minimal padding */}
+                      <div className="relative w-full md:w-80 flex-shrink-0">
+                        {!authorPhotoError ? (
+                          <div className="relative overflow-hidden rounded-xl border-2 border-[#b8963a]/30 shadow-xl h-full">
+                            <img 
+                              src="/Images/author-photo.png" 
+                              alt="James E. Beksha - Author" 
+                              className="w-full h-full object-cover"
+                              onError={() => setAuthorPhotoError(true)}
+                            />
+                            {/* Decorative corner accents */}
+                            <div className="absolute top-0 left-0 w-14 h-14 border-t-3 border-l-3 border-[#b8963a]/40 rounded-tl-xl"></div>
+                            <div className="absolute top-0 right-0 w-14 h-14 border-t-3 border-r-3 border-[#b8963a]/40 rounded-tr-xl"></div>
+                            <div className="absolute bottom-0 left-0 w-14 h-14 border-b-3 border-l-3 border-[#b8963a]/40 rounded-bl-xl"></div>
+                            <div className="absolute bottom-0 right-0 w-14 h-14 border-b-3 border-r-3 border-[#b8963a]/40 rounded-br-xl"></div>
+                            {/* Crimson stamp overlay */}
+                            <div className="absolute bottom-3 right-3 bg-[#8b1a1a]/90 backdrop-blur-sm px-3 py-1 rounded-full border border-[#8b1a1a]/40 shadow-lg">
+                              <span className="text-[#f5f0e8] text-[10px] font-mono font-bold tracking-wider">AUTHOR</span>
+                            </div>
+                            {/* Gold accent line */}
+                            <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-[#b8963a] via-[#d4b86a] to-[#b8963a]"></div>
+                          </div>
+                        ) : (
+                          <div className="relative overflow-hidden rounded-xl border-2 border-[#b8963a]/20 bg-[#1a1a1a] p-12 text-center h-full flex flex-col items-center justify-center">
+                            <User className="w-20 h-20 text-[#b8963a]/50 mx-auto mb-3" />
+                            <p className="text-[#f5f0e8]/60 text-sm font-mono">Author Photo</p>
+                            <p className="text-[#f5f0e8]/40 text-xs font-mono">James E. Beksha</p>
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Text Content - Right side with adjusted spacing for larger photo */}
+                      <div className="flex-1 space-y-3 py-1">
+                        <p className="text-base leading-relaxed text-[#1a1a1a]">
+                          <span className="font-semibold text-[#1a1a1a]">James E. Beksha</span> began his writer's odyssey in a security guard mailer on the 6th of February 1992. 
+                          While reading Robert B. Parker's <span className="italic font-medium">Thin Air</span>, he asked himself: <span className="font-medium text-[#8b1a1a]">"how hard could it be to write a book?"</span> 
+                          That question launched a 22-year journey.
+                        </p>
+                        <p className="text-base leading-relaxed text-[#1a1a1a]">
+                          A high school dropout in 1979, James is a hard worker from a hard-working family — with a <span className="font-semibold text-[#1a1a1a]">Rock n' Roll Attitude</span> that 
+                          fuels every page. His debut novel is now being re-published with <span className="font-semibold text-[#1a1a1a]">Author Reputation Press</span> out of Canton, Mass.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
                 </div>
 
+                {/* Quote - Now below the photo/text row */}
                 <div className={`about-quote transition-all duration-700 delay-200 ${isVisible['about-wrapper'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
                   <div className="flex items-start gap-3">
                     <Quote className="w-5 h-5 text-[#8b1a1a] flex-shrink-0 mt-1" />
@@ -265,38 +307,40 @@ const App = () => {
                 </div>
               </div>
 
+              {/* Right Column - Drop a line form */}
               <div className="md:col-span-2 space-y-4">
-                <div className={`about-card transition-all duration-700 delay-300 ${isVisible['about-wrapper'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-                  <div className="flex items-center gap-3 text-[#8b1a1a] mb-3">
-                    <Mail className="w-5 h-5" />
-                    <span className="font-semibold font-mono text-sm tracking-wide">DROP A LINE</span>
+                <div className={`transition-all duration-700 delay-300 ${isVisible['about-wrapper'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+                  <div className="about-card">
+                    <div className="flex items-center gap-3 text-[#8b1a1a] mb-3">
+                      <Mail className="w-5 h-5" />
+                      <span className="font-semibold font-mono text-sm tracking-wide">DROP A LINE</span>
+                    </div>
+                    <p className="text-sm text-[#1a1a1a]/70 mb-4">Submit your case notes about the book.</p>
+                    <form onSubmit={handleEmailSubmit} className="space-y-3">
+                      <input 
+                        type="email" 
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        placeholder="eddiejames58@Yahoo.com" 
+                        className="input-email"
+                      />
+                      <button 
+                        type="submit"
+                        className="w-full btn-primary flex items-center justify-center gap-2"
+                      >
+                        Send <ArrowRight className="w-4 h-4" />
+                      </button>
+                      {emailStatus && (
+                        <div className={`text-sm text-center ${emailStatus.includes('Case') ? 'text-[#8b1a1a]' : 'text-[#8b1a1a]'}`}>
+                          {emailStatus}
+                        </div>
+                      )}
+                    </form>
+                    <div className="mt-3 flex items-center justify-center gap-2 text-xs text-[#1a1a1a]/50 font-mono">
+                      <span className="w-2 h-2 rounded-full bg-[#b8963a]"></span>
+                      eddiejames58@Yahoo.com
+                    </div>
                   </div>
-                  <p className="text-sm text-[#1a1a1a]/70 mb-4">Submit your case notes about the book.</p>
-                  <form onSubmit={handleEmailSubmit} className="space-y-3">
-                    <input 
-                      type="email" 
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      placeholder="eddiejames58@Yahoo.com" 
-                      className="input-email"
-                    />
-                    <button 
-                      type="submit"
-                      className="w-full btn-primary flex items-center justify-center gap-2"
-                    >
-                      Send <ArrowRight className="w-4 h-4" />
-                    </button>
-                    {emailStatus && (
-                      <div className={`text-sm text-center ${emailStatus.includes('Case') ? 'text-[#8b1a1a]' : 'text-[#8b1a1a]'}`}>
-                        {emailStatus}
-                      </div>
-                    )}
-                  </form>
-                </div>
-
-                <div className={`about-card flex items-center justify-center gap-2 text-xs text-[#1a1a1a]/50 font-mono transition-all duration-700 delay-400 ${isVisible['about-wrapper'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-                  <span className="w-2 h-2 rounded-full bg-[#b8963a]"></span>
-                  eddiejames58@Yahoo.com
                 </div>
               </div>
             </div>
@@ -359,7 +403,7 @@ const App = () => {
               <div className="book-showcase">
                 <div className={`book-image-container transition-all duration-700 delay-200 ${isVisible['book-wrapper'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
                   <img 
-                    src="/Images/jamesbook.png" 
+                    src="/Images/front-cover.png" 
                     alt="The Case of the Enslaved Souls - Front Cover" 
                     className="w-full h-auto"
                     onError={(e) => {
@@ -494,21 +538,52 @@ const App = () => {
 
       {/* ===== FOOTER ===== */}
       <footer className="border-t border-[#b8963a]/10 py-8 bg-[#0f1a2e] w-full">
-        <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-[#f5f0e8]/40">
-          <div className="flex items-center gap-2">
+        <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
+          {/* Left: Author info */}
+          <div className="flex items-center gap-2 text-sm text-[#f5f0e8]/40">
             <span className="font-semibold text-[#f5f0e8]/60">James E. Beksha</span>
             <span className="hidden md:inline">·</span>
             <span>Author · Private Eye fiction</span>
           </div>
-          <div className="flex items-center gap-4">
+
+          {/* Center: Launch Portal Button */}
+          <div className="flex-shrink-0">
+            <a
+              href="https://buy.stripe.com/7sY5kEdVm6vNfRU8Ey2kw07"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="
+                relative group
+                px-4 py-2 sm:px-6 sm:py-2.5
+                bg-gradient-to-r from-[#8b1a1a] via-[#a82828] to-[#8b1a1a]
+                text-[#f5f0e8] text-xs sm:text-sm font-medium
+                rounded-full
+                shadow-md shadow-[#8b1a1a]/30
+                transform transition-all duration-300
+                hover:scale-105 hover:shadow-[#a82828]/50
+                hover:shadow-lg
+                border border-[#b8963a]/20
+                overflow-hidden
+                flex items-center gap-2
+              "
+            >
+              <span className="absolute inset-0 bg-gradient-to-r from-[#8b1a1a] via-[#a82828] to-[#8b1a1a] opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-md"></span>
+              <span className="relative z-10 flex items-center gap-2">
+                <Rocket className="w-4 h-4 text-[#b8963a] group-hover:text-[#d4b86a] transition-colors duration-300" />
+                Launch & Go-Live Portal
+                <ArrowRight className="w-4 h-4 text-[#b8963a] group-hover:text-[#d4b86a] transition-colors duration-300 group-hover:translate-x-1" />
+              </span>
+              <span className="absolute inset-0 rounded-full border border-[#b8963a]/20 group-hover:border-[#b8963a]/60 transition-all duration-300"></span>
+            </a>
+          </div>
+
+          {/* Right: Email and copyright */}
+          <div className="flex items-center gap-4 text-sm text-[#f5f0e8]/40">
             <a href="mailto:eddiejames58@Yahoo.com" className="hover:text-[#b8963a] flex items-center gap-1 transition font-mono text-xs">
               <Mail className="w-4 h-4" /> eddiejames58@Yahoo.com
             </a>
             <span className="text-[#f5f0e8]/20">|</span>
             <span className="text-xs font-mono">© 2026</span>
-          </div>
-          <div className="flex gap-1 text-xs text-[#f5f0e8]/30">
-            <span className="flex items-center gap-1"><Music className="w-3 h-3" /> Rock n' Roll Attitude</span>
           </div>
         </div>
       </footer>
