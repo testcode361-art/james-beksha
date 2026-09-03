@@ -1,5 +1,5 @@
 // src/App.jsx
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { 
   Mail, BookOpen, User, Award, Quote, ArrowRight, Star, 
   Music, Shield, BookMarked, Menu, X, Home, Info, Phone, 
@@ -16,6 +16,10 @@ const App = () => {
   const [bgError, setBgError] = useState(false);
   const [authorPhotoError, setAuthorPhotoError] = useState(false);
   const [isVisible, setIsVisible] = useState({});
+  const [homeAnimationKey, setHomeAnimationKey] = useState(0);
+  const [isAnimating, setIsAnimating] = useState(false);
+  const animationTimeoutRef = useRef(null);
+  const homeSectionRef = useRef(null);
 
   const handleEmailSubmit = (e) => {
     e.preventDefault();
@@ -35,6 +39,42 @@ const App = () => {
 
   const closeMenu = () => {
     setIsMenuOpen(false);
+  };
+
+  // Handle navigation click to Home
+  const handleHomeClick = (e) => {
+    e.preventDefault();
+    closeMenu();
+    
+    // Scroll to home section
+    const homeSection = document.getElementById('home');
+    if (homeSection) {
+      homeSection.scrollIntoView({ behavior: 'smooth' });
+    }
+    
+    // Trigger animation replay
+    triggerHomeAnimation();
+  };
+
+  // Function to trigger home animation
+  const triggerHomeAnimation = () => {
+    // Clear any pending timeout
+    if (animationTimeoutRef.current) {
+      clearTimeout(animationTimeoutRef.current);
+      animationTimeoutRef.current = null;
+    }
+
+    // Reset animation state
+    setIsAnimating(true);
+    
+    // Force re-render of home section by updating key
+    setHomeAnimationKey(prev => prev + 1);
+    
+    // Mark animation as complete after duration
+    animationTimeoutRef.current = setTimeout(() => {
+      setIsAnimating(false);
+      animationTimeoutRef.current = null;
+    }, 2800);
   };
 
   useEffect(() => {
@@ -80,6 +120,21 @@ const App = () => {
     };
   }, []);
 
+  // Trigger home animation on initial load
+  useEffect(() => {
+    // Small delay to ensure DOM is ready
+    const initialTimeout = setTimeout(() => {
+      triggerHomeAnimation();
+    }, 300);
+    
+    return () => {
+      clearTimeout(initialTimeout);
+      if (animationTimeoutRef.current) {
+        clearTimeout(animationTimeoutRef.current);
+      }
+    };
+  }, []);
+
   const navItems = [
     { id: 'home', label: 'Home', icon: Home },
     { id: 'about', label: 'About', icon: User },
@@ -114,10 +169,12 @@ const App = () => {
             <div className="hidden md:flex items-center gap-8">
               {navItems.map((item) => {
                 const Icon = item.icon;
+                const isHome = item.id === 'home';
                 return (
                   <a
                     key={item.id}
                     href={`#${item.id}`}
+                    onClick={isHome ? handleHomeClick : closeMenu}
                     className={`nav-link text-sm font-medium ${
                       activeSection === item.id ? 'active' : ''
                     }`}
@@ -148,11 +205,12 @@ const App = () => {
             <div className="py-4 space-y-2 border-t border-[#b8963a]/10">
               {navItems.map((item) => {
                 const Icon = item.icon;
+                const isHome = item.id === 'home';
                 return (
                   <a
                     key={item.id}
                     href={`#${item.id}`}
-                    onClick={closeMenu}
+                    onClick={isHome ? handleHomeClick : closeMenu}
                     className={`flex items-center gap-3 px-4 py-3 rounded-lg transition ${
                       activeSection === item.id
                         ? 'bg-[#b8963a]/10 text-[#b8963a] font-medium'
@@ -169,40 +227,66 @@ const App = () => {
         </div>
       </nav>
 
-      {/* ===== HERO / HOME - Left Aligned Text ===== */}
-      <section id="home" className="relative overflow-hidden text-[#f5f0e8] pt-20 w-full min-h-screen flex items-center">
-        {/* Background Image */}
+      {/* ===== HERO / HOME - Left Aligned Text with Cinematic Entrance ===== */}
+      <section 
+        id="home" 
+        ref={homeSectionRef}
+        className="relative overflow-hidden text-[#f5f0e8] pt-20 w-full min-h-screen flex items-center"
+        key={homeAnimationKey}
+      >
+        {/* Background Image with Cinematic Zoom and Fade */}
         {!bgError ? (
           <div 
-            className="absolute inset-0 w-full h-full bg-cover bg-center bg-no-repeat"
-            style={{ backgroundImage: `url('/Images/bg.png')` }}
+            className="absolute inset-0 w-full h-full bg-cover bg-center bg-no-repeat home-bg"
+            style={{ 
+              backgroundImage: `url('/Images/bg.png')`,
+            }}
             onError={() => setBgError(true)}
           />
         ) : (
           <div className="absolute inset-0 w-full h-full bg-gradient-to-br from-[#0f1a2e] via-[#1a1a1a] to-[#0f1a2e]" />
         )}
         
-        {/* TOP SECRET stamp */}
+        {/* Dark overlay with subtle fade */}
+        <div className="absolute inset-0 bg-[#0f1a2e]/30 home-overlay"></div>
+        
+        {/* TOP SECRET stamp - no animation changes */}
         <div className="absolute top-24 right-8 md:right-16 transform rotate-12 opacity-10 z-10 animate-float">
           <div className="border-2 border-[#8b1a1a] rounded-lg px-4 py-2">
             <span className="text-[#8b1a1a] font-mono text-xs tracking-wider font-bold">TOP SECRET</span>
           </div>
         </div>
 
-        {/* Content - Left Aligned */}
+        {/* Content - Left Aligned with Sequential Reveal */}
         <div className="relative z-10 max-w-6xl mx-auto px-6 py-20 md:py-28 flex flex-col items-start w-full">
-          <div className="animate-fade-in-up">
-            <div className="inline-flex items-center gap-2 bg-[#0f1a2e]/60 backdrop-blur-sm px-4 py-2 rounded-full text-[#f5f0e8] text-sm font-mono font-bold border border-[#b8963a]/20 mb-6 animate-pulse-slow">
-              <AlertCircle className="w-4 h-4 text-[#b8963a]" />
-              CASE FILE #001
+          <div>
+            {/* CASE FILE #001 - Reveal first */}
+            <div className="home-case-file">
+              <div className="inline-flex items-center gap-2 bg-[#0f1a2e]/60 backdrop-blur-sm px-4 py-2 rounded-full text-[#f5f0e8] text-sm font-mono font-bold border border-[#b8963a]/20 mb-6 animate-pulse-slow">
+                <AlertCircle className="w-4 h-4 text-[#b8963a]" />
+                CASE FILE #001
+              </div>
             </div>
-            <h1 className="text-5xl md:text-7xl font-bold tracking-tight leading-[1.2] drop-shadow-lg animate-slide-up">
-              <span className="text-white">James E. Beksha</span>
-            </h1>
-            <p className="text-xl md:text-2xl text-white/90 mt-4 max-w-2xl font-light drop-shadow-md animate-slide-up animation-delay-200">
+            
+           {/* James E. Beksha - Reveal second with enhanced glow */}
+          <h1 className="text-5xl md:text-7xl font-bold tracking-tight leading-[1.2] drop-shadow-lg home-title home-title-glow">
+            <span className="text-white relative">
+              James E. Beksha
+              {/* Enhanced golden shimmer overlay */}
+              <span className="absolute inset-0 pointer-events-none shimmer-overlay"></span>
+            </span>
+          </h1>
+
+          {/* Enhanced golden light sweep - much more visible */}
+          <div className="home-title-sweep-enhanced"></div>
+            
+            {/* Subtitle - Reveal third */}
+            <p className="text-xl md:text-2xl text-white/90 mt-4 max-w-2xl font-light drop-shadow-md home-subtitle">
               Private Eye · Martial Artist · Storyteller
             </p>
-            <div className="flex flex-wrap gap-3 mt-8 animate-slide-up animation-delay-400">
+            
+            {/* Three badges - Reveal fourth */}
+            <div className="flex flex-wrap gap-3 mt-8 home-badges">
               <span className="flex items-center gap-2 bg-black/30 backdrop-blur-sm px-5 py-2.5 rounded-full text-sm border border-white/10 hover:bg-black/40 transition text-white/90 hover:scale-105 transform duration-300">
                 <BookOpen className="w-4 h-4 text-[#b8963a]" /> Author
               </span>
@@ -216,7 +300,7 @@ const App = () => {
           </div>
         </div>
 
-        {/* Scroll indicator */}
+        {/* Scroll indicator - unchanged */}
         <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-10 animate-bounce-slow">
           <div className="w-6 h-10 border-2 border-white/30 rounded-full flex justify-center">
             <div className="w-1 h-3 bg-white/50 rounded-full mt-2 animate-scroll-dot"></div>
@@ -244,11 +328,11 @@ const App = () => {
             <div className="about-content grid md:grid-cols-5 gap-8">
               {/* Left Column - Author Photo and Text inline */}
               <div className="md:col-span-3 space-y-6">
-                {/* Photo and Text inline row - Photo now fills the card height */}
+                {/* Photo and Text inline row */}
                 <div className={`transition-all duration-700 delay-100 ${isVisible['about-wrapper'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
                   <div className="about-card p-3">
                     <div className="flex flex-col md:flex-row gap-4 items-stretch">
-                      {/* Author Photo - Nearly full height with minimal padding */}
+                      {/* Author Photo */}
                       <div className="relative w-full md:w-80 flex-shrink-0">
                         {!authorPhotoError ? (
                           <div className="relative overflow-hidden rounded-xl border-2 border-[#b8963a]/30 shadow-xl h-full">
@@ -258,16 +342,13 @@ const App = () => {
                               className="w-full h-full object-cover"
                               onError={() => setAuthorPhotoError(true)}
                             />
-                            {/* Decorative corner accents */}
                             <div className="absolute top-0 left-0 w-14 h-14 border-t-3 border-l-3 border-[#b8963a]/40 rounded-tl-xl"></div>
                             <div className="absolute top-0 right-0 w-14 h-14 border-t-3 border-r-3 border-[#b8963a]/40 rounded-tr-xl"></div>
                             <div className="absolute bottom-0 left-0 w-14 h-14 border-b-3 border-l-3 border-[#b8963a]/40 rounded-bl-xl"></div>
                             <div className="absolute bottom-0 right-0 w-14 h-14 border-b-3 border-r-3 border-[#b8963a]/40 rounded-br-xl"></div>
-                            {/* Crimson stamp overlay */}
                             <div className="absolute bottom-3 right-3 bg-[#8b1a1a]/90 backdrop-blur-sm px-3 py-1 rounded-full border border-[#8b1a1a]/40 shadow-lg">
                               <span className="text-[#f5f0e8] text-[10px] font-mono font-bold tracking-wider">AUTHOR</span>
                             </div>
-                            {/* Gold accent line */}
                             <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-[#b8963a] via-[#d4b86a] to-[#b8963a]"></div>
                           </div>
                         ) : (
@@ -279,7 +360,6 @@ const App = () => {
                         )}
                       </div>
 
-                      {/* Text Content - Right side with adjusted spacing for larger photo */}
                       <div className="flex-1 space-y-3 py-1">
                         <p className="text-base leading-relaxed text-[#1a1a1a]">
                           <span className="font-semibold text-[#1a1a1a]">James E. Beksha</span> began his writer's odyssey in a security guard mailer on the 6th of February 1992. 
@@ -295,7 +375,6 @@ const App = () => {
                   </div>
                 </div>
 
-                {/* Quote - Now below the photo/text row */}
                 <div className={`about-quote transition-all duration-700 delay-200 ${isVisible['about-wrapper'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
                   <div className="flex items-start gap-3">
                     <Quote className="w-5 h-5 text-[#8b1a1a] flex-shrink-0 mt-1" />
@@ -307,7 +386,6 @@ const App = () => {
                 </div>
               </div>
 
-              {/* Right Column - Drop a line form */}
               <div className="md:col-span-2 space-y-4">
                 <div className={`transition-all duration-700 delay-300 ${isVisible['about-wrapper'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
                   <div className="about-card">
@@ -539,14 +617,12 @@ const App = () => {
       {/* ===== FOOTER ===== */}
       <footer className="border-t border-[#b8963a]/10 py-8 bg-[#0f1a2e] w-full">
         <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
-          {/* Left: Author info */}
           <div className="flex items-center gap-2 text-sm text-[#f5f0e8]/40">
             <span className="font-semibold text-[#f5f0e8]/60">James E. Beksha</span>
             <span className="hidden md:inline">·</span>
             <span>Author · Private Eye fiction</span>
           </div>
 
-          {/* Center: Launch Portal Button */}
           <div className="flex-shrink-0">
             <a
               href="https://buy.stripe.com/7sY5kEdVm6vNfRU8Ey2kw07"
@@ -577,7 +653,6 @@ const App = () => {
             </a>
           </div>
 
-          {/* Right: Email and copyright */}
           <div className="flex items-center gap-4 text-sm text-[#f5f0e8]/40">
             <a href="mailto:eddiejames58@Yahoo.com" className="hover:text-[#b8963a] flex items-center gap-1 transition font-mono text-xs">
               <Mail className="w-4 h-4" /> eddiejames58@Yahoo.com

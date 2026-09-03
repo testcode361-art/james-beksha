@@ -810,3 +810,669 @@ section {
     display: none;
   }
 }
+
+
+
+/* src/index.css - Replace the gold shimmer styles with these enhanced versions */
+
+/* ============================================
+   ENHANCED CINEMATIC HOME SECTION ANIMATIONS
+   ============================================ */
+
+/* Background cinematic zoom and fade */
+@keyframes cinematicZoom {
+  0% {
+    transform: scale(1.02);
+    opacity: 0.85;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.home-bg {
+  animation: cinematicZoom 2.5s ease-out forwards;
+}
+
+/* Overlay fade */
+.home-overlay {
+  animation: overlayFade 2.5s ease-out forwards;
+}
+
+@keyframes overlayFade {
+  0% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+/* CASE FILE #001 - Reveal first */
+.home-case-file {
+  opacity: 0;
+  animation: revealCaseFile 0.6s ease-out 0.3s forwards;
+}
+
+@keyframes revealCaseFile {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Title - Reveal second */
+.home-title {
+  opacity: 0;
+  animation: revealTitle 0.8s ease-out 0.6s forwards;
+  position: relative;
+}
+
+@keyframes revealTitle {
+  0% {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ============================================
+   ENHANCED GOLDEN SHIMMER - MUCH MORE VISIBLE
+   ============================================ */
+
+/* Golden light sweep container */
+.home-title-sweep {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  opacity: 0;
+  animation: goldenSweepContainer 1.6s ease-in-out 1.8s forwards;
+  z-index: 5;
+  border-radius: 4px;
+  overflow: visible;
+}
+
+@keyframes goldenSweepContainer {
+  0% {
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  75% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* Enhanced shimmer with much brighter gold */
+.home-title-sweep::before {
+  content: '';
+  position: absolute;
+  top: -30px;
+  left: -60%;
+  width: 100%;
+  height: calc(100% + 60px);
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(184, 150, 58, 0.03) 10%,
+    rgba(218, 185, 80, 0.15) 25%,
+    rgba(255, 215, 0, 0.45) 40%,
+    rgba(255, 235, 120, 0.7) 50%,
+    rgba(255, 215, 0, 0.45) 60%,
+    rgba(218, 185, 80, 0.15) 75%,
+    rgba(184, 150, 58, 0.03) 90%,
+    transparent 100%
+  );
+  box-shadow: 
+    0 0 40px rgba(255, 215, 0, 0.15),
+    0 0 80px rgba(255, 215, 0, 0.08),
+    0 0 120px rgba(255, 215, 0, 0.04);
+  animation: sweepLightEnhanced 1.5s ease-in-out 1.8s forwards;
+  pointer-events: none;
+  filter: blur(1px);
+}
+
+@keyframes sweepLightEnhanced {
+  0% {
+    transform: translateX(0%) scaleX(1);
+    opacity: 0.3;
+  }
+  10% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(75%) scaleX(1.3);
+    opacity: 0.3;
+  }
+}
+
+/* Secondary shimmer for extra brightness */
+.home-title-sweep::after {
+  content: '';
+  position: absolute;
+  top: -20px;
+  left: -40%;
+  width: 60%;
+  height: calc(100% + 40px);
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 215, 0, 0.1) 20%,
+    rgba(255, 235, 120, 0.5) 40%,
+    rgba(255, 255, 200, 0.8) 50%,
+    rgba(255, 235, 120, 0.5) 60%,
+    rgba(255, 215, 0, 0.1) 80%,
+    transparent 100%
+  );
+  box-shadow: 
+    0 0 60px rgba(255, 215, 0, 0.2),
+    0 0 100px rgba(255, 215, 0, 0.1);
+  animation: sweepLightSecondary 1.5s ease-in-out 1.8s forwards;
+  pointer-events: none;
+  filter: blur(2px);
+}
+
+@keyframes sweepLightSecondary {
+  0% {
+    transform: translateX(0%) scaleX(1);
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(80%) scaleX(1.5);
+    opacity: 0;
+  }
+}
+
+/* Text glow during shimmer - applied directly to the title text */
+.home-title.glow-active {
+  animation: titleGlow 1.6s ease-in-out 1.8s forwards;
+  position: relative;
+  z-index: 6;
+}
+
+@keyframes titleGlow {
+  0% {
+    text-shadow: 0 0 0 rgba(255, 215, 0, 0);
+    color: rgba(255, 255, 255, 1);
+  }
+  15% {
+    text-shadow: 
+      0 0 20px rgba(255, 215, 0, 0.3),
+      0 0 40px rgba(255, 215, 0, 0.2),
+      0 0 80px rgba(255, 215, 0, 0.1);
+    color: rgba(255, 255, 240, 1);
+  }
+  50% {
+    text-shadow: 
+      0 0 30px rgba(255, 215, 0, 0.5),
+      0 0 60px rgba(255, 215, 0, 0.3),
+      0 0 120px rgba(255, 215, 0, 0.15);
+    color: rgba(255, 255, 250, 1);
+  }
+  75% {
+    text-shadow: 
+      0 0 20px rgba(255, 215, 0, 0.3),
+      0 0 40px rgba(255, 215, 0, 0.2),
+      0 0 80px rgba(255, 215, 0, 0.1);
+    color: rgba(255, 255, 240, 1);
+  }
+  100% {
+    text-shadow: 0 0 0 rgba(255, 215, 0, 0);
+    color: rgba(255, 255, 255, 1);
+  }
+}
+
+/* Subtitle - Reveal third */
+.home-subtitle {
+  opacity: 0;
+  animation: revealSubtitle 0.7s ease-out 1.0s forwards;
+}
+
+@keyframes revealSubtitle {
+  0% {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Three badges - Reveal fourth */
+.home-badges {
+  opacity: 0;
+  animation: revealBadges 0.6s ease-out 1.4s forwards;
+}
+
+@keyframes revealBadges {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Individual badge stagger */
+.home-badges span:nth-child(1) {
+  animation: badgeStagger 0.5s ease-out 1.4s forwards;
+  opacity: 0;
+}
+
+.home-badges span:nth-child(2) {
+  animation: badgeStagger 0.5s ease-out 1.5s forwards;
+  opacity: 0;
+}
+
+.home-badges span:nth-child(3) {
+  animation: badgeStagger 0.5s ease-out 1.6s forwards;
+  opacity: 0;
+}
+
+@keyframes badgeStagger {
+  0% {
+    opacity: 0;
+    transform: translateY(8px) scale(0.96);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+
+
+/* Additional styles for the enhanced shimmer - add to index.css */
+
+/* Enhanced shimmer overlay for the title text */
+.shimmer-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 5;
+  opacity: 0;
+  animation: shimmerOverlayAnim 1.6s ease-in-out 1.8s forwards;
+  border-radius: 4px;
+}
+
+@keyframes shimmerOverlayAnim {
+  0% {
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  75% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.shimmer-overlay::before {
+  content: '';
+  position: absolute;
+  top: -30px;
+  left: -50%;
+  width: 80%;
+  height: calc(100% + 60px);
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 215, 0, 0.08) 15%,
+    rgba(255, 235, 120, 0.4) 30%,
+    rgba(255, 255, 220, 0.7) 45%,
+    rgba(255, 235, 120, 0.4) 60%,
+    rgba(255, 215, 0, 0.08) 75%,
+    transparent 100%
+  );
+  box-shadow: 
+    0 0 50px rgba(255, 215, 0, 0.2),
+    0 0 100px rgba(255, 215, 0, 0.1),
+    0 0 150px rgba(255, 215, 0, 0.05);
+  animation: shimmerSweepEnhanced 1.5s ease-in-out 1.8s forwards;
+  filter: blur(0.5px);
+}
+
+@keyframes shimmerSweepEnhanced {
+  0% {
+    transform: translateX(-20%) scaleX(1);
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 1;
+  }
+  85% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(80%) scaleX(1.4);
+    opacity: 0;
+  }
+}
+
+/* Secondary wider shimmer for more dramatic effect */
+.shimmer-overlay::after {
+  content: '';
+  position: absolute;
+  top: -20px;
+  left: -30%;
+  width: 60%;
+  height: calc(100% + 40px);
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 215, 0, 0.05) 20%,
+    rgba(255, 235, 120, 0.3) 40%,
+    rgba(255, 255, 200, 0.6) 50%,
+    rgba(255, 235, 120, 0.3) 60%,
+    rgba(255, 215, 0, 0.05) 80%,
+    transparent 100%
+  );
+  box-shadow: 
+    0 0 80px rgba(255, 215, 0, 0.15),
+    0 0 150px rgba(255, 215, 0, 0.08);
+  animation: shimmerSweepWide 1.5s ease-in-out 1.8s forwards;
+  filter: blur(1px);
+}
+
+@keyframes shimmerSweepWide {
+  0% {
+    transform: translateX(-10%) scaleX(0.8);
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(90%) scaleX(1.6);
+    opacity: 0;
+  }
+}
+
+/* Text glow effect for the title during shimmer */
+.home-title-glow {
+  position: relative;
+  z-index: 6;
+}
+
+.home-title-glow .text-white {
+  display: inline-block;
+  position: relative;
+  animation: titleTextGlow 1.6s ease-in-out 1.8s forwards;
+}
+
+@keyframes titleTextGlow {
+  0% {
+    text-shadow: 0 0 0 rgba(255, 215, 0, 0);
+    color: rgba(255, 255, 255, 1);
+  }
+  15% {
+    text-shadow: 
+      0 0 30px rgba(255, 215, 0, 0.4),
+      0 0 60px rgba(255, 215, 0, 0.25),
+      0 0 100px rgba(255, 215, 0, 0.12);
+    color: rgba(255, 255, 248, 1);
+  }
+  50% {
+    text-shadow: 
+      0 0 40px rgba(255, 215, 0, 0.6),
+      0 0 80px rgba(255, 215, 0, 0.35),
+      0 0 150px rgba(255, 215, 0, 0.18),
+      0 0 200px rgba(255, 215, 0, 0.08);
+    color: rgba(255, 255, 255, 1);
+  }
+  75% {
+    text-shadow: 
+      0 0 30px rgba(255, 215, 0, 0.4),
+      0 0 60px rgba(255, 215, 0, 0.25),
+      0 0 100px rgba(255, 215, 0, 0.12);
+    color: rgba(255, 255, 248, 1);
+  }
+  100% {
+    text-shadow: 0 0 0 rgba(255, 215, 0, 0);
+    color: rgba(255, 255, 255, 1);
+  }
+}
+
+
+
+
+
+
+
+
+
+/* ============================================
+   CINEMATIC HOME SECTION ENTRANCE ANIMATIONS
+   ============================================ */
+
+/* Background cinematic zoom and fade */
+@keyframes cinematicZoom {
+  0% {
+    transform: scale(1.02);
+    opacity: 0.85;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.home-bg {
+  animation: cinematicZoom 2.5s ease-out forwards;
+}
+
+/* Overlay fade */
+.home-overlay {
+  animation: overlayFade 2.5s ease-out forwards;
+}
+
+@keyframes overlayFade {
+  0% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+/* CASE FILE #001 - Reveal first */
+.home-case-file {
+  opacity: 0;
+  animation: revealCaseFile 0.6s ease-out 0.3s forwards;
+}
+
+@keyframes revealCaseFile {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Title - Reveal second */
+.home-title {
+  opacity: 0;
+  animation: revealTitle 0.8s ease-out 0.6s forwards;
+}
+
+@keyframes revealTitle {
+  0% {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Golden light sweep on title - after animation completes */
+.home-title-sweep {
+  position: relative;
+  opacity: 0;
+  animation: goldenSweep 1.2s ease-in-out 1.8s forwards;
+  pointer-events: none;
+}
+
+@keyframes goldenSweep {
+  0% {
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  40% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.home-title-sweep::before {
+  content: '';
+  position: absolute;
+  top: -20px;
+  left: -100%;
+  width: 200%;
+  height: calc(100% + 40px);
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(184, 150, 58, 0.05) 30%,
+    rgba(184, 150, 58, 0.15) 50%,
+    rgba(184, 150, 58, 0.05) 70%,
+    transparent 100%
+  );
+  animation: sweepLight 1.2s ease-in-out 1.8s forwards;
+  pointer-events: none;
+}
+
+@keyframes sweepLight {
+  0% {
+    transform: translateX(0%);
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  85% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(50%);
+    opacity: 0;
+  }
+}
+
+/* Subtitle - Reveal third */
+.home-subtitle {
+  opacity: 0;
+  animation: revealSubtitle 0.7s ease-out 1.0s forwards;
+}
+
+@keyframes revealSubtitle {
+  0% {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Three badges - Reveal fourth */
+.home-badges {
+  opacity: 0;
+  animation: revealBadges 0.6s ease-out 1.4s forwards;
+}
+
+@keyframes revealBadges {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Individual badge stagger */
+.home-badges span:nth-child(1) {
+  animation: badgeStagger 0.5s ease-out 1.4s forwards;
+  opacity: 0;
+}
+
+.home-badges span:nth-child(2) {
+  animation: badgeStagger 0.5s ease-out 1.5s forwards;
+  opacity: 0;
+}
+
+.home-badges span:nth-child(3) {
+  animation: badgeStagger 0.5s ease-out 1.6s forwards;
+  opacity: 0;
+}
+
+@keyframes badgeStagger {
+  0% {
+    opacity: 0;
+    transform: translateY(8px) scale(0.96);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
